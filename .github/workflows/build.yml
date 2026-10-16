@@ -20,13 +20,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Generate Gradle Wrapper & Build APK
+      - name: Setup Gradle 8.4
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
+
+      - name: Build Debug APK
         run: |
-          # Use pre-installed Gradle to generate a local wrapper
-          gradle wrapper --gradle-version 8.4
-          chmod +x gradlew
-          # Build using the wrapper with no-daemon to prevent hangs
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          gradle assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK Artifact
         if: success()
